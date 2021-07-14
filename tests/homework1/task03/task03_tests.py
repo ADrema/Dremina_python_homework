@@ -6,8 +6,7 @@ data_provider = [
     ("../task03/oneLine.txt", (1, 5)),
     ("../task03/multipleFile.txt", (0, 10)),
     ("../task03/singleValueFile.txt", (5, 5)),
-    ("../task03/negativeValuesFile.txt", (-6, -1))
-
+    ("../task03/negativeValuesFile.txt", (-6, -1)),
 ]
 
 
