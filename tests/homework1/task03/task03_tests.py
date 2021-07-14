@@ -1,25 +1,16 @@
+import pytest
+
 from hw.homework1.task03 import find_maximum_and_minimum
 
+data_provider = [
+    ("../task03/oneLine.txt", (1, 5)),
+    ("../task03/multipleFile.txt", (0, 10)),
+    ("../task03/singleValueFile.txt", (5, 5)),
+    ("../task03/negativeValuesFile.txt", (-6, -1))
 
-def test_one_line_file():
-    """Check that one line file is processed correctly"""
-    result = (1, 5)
-    assert find_maximum_and_minimum("../task03/oneLine.txt") == result
-
-
-def test_multiple_line_file():
-    """Check that multiple line file is processed correctly"""
-    result = (0, 10)
-    assert find_maximum_and_minimum("../task03/multipleFile.txt") == result
+]
 
 
-def test_single_value_file():
-    """Check that single value file is processed correctly"""
-    result = (5, 5)
-    assert find_maximum_and_minimum("../task03/singleValueFile.txt") == result
-
-
-def test_negative_values_file():
-    """Check that file with negative values is processed correctly"""
-    result = (-6, -1)
-    assert find_maximum_and_minimum("../task03/negativeValuesFile.txt") == result
+@pytest.mark.parametrize("file_path, expected", data_provider)
+def test_calculated_max_and_min_values(file_path, expected):
+    assert find_maximum_and_minimum(file_path) == expected
