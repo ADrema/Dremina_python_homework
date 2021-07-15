@@ -23,7 +23,8 @@ from typing import List, Tuple
 
 def get_major_and_minor_list_elements(inp: List) -> Tuple[int, int]:
     c = Counter(inp)
-
-    most_frequent = c.most_common(1)[0][0]
+    # most_common returns list, which is sorted based on count of the elements
+    most_frequent = c.most_common()[0][0]
     less_frequent = c.most_common()[-1][0]
+
     return most_frequent, less_frequent

@@ -18,5 +18,8 @@ import itertools
 from typing import Any, List
 
 
-def get_lists_combinations(*args: List[Any]) -> List[List]:
+def get_lists_of_possible_combinations(*args: List[Any]) -> List[List]:
+    """
+    Returns list of lists with possible combinations based on input lists
+    """
     return [list(x) for x in list(itertools.product(*args))]

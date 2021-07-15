@@ -20,12 +20,12 @@ from typing import Iterable
 
 
 def get_custom_range(source: Iterable, *args):
-    start, stop, step = parse_args(source, args)
+    start_index, stop_index, step = parse_args(source, args)
 
     if step < 0:
-        return list(itertools.islice(source[::-1], start, stop + 1, -step))
+        return list(itertools.islice(source[::-1], start_index, stop_index + 1, -step))
     else:
-        return list(itertools.islice(source, start, stop, step))
+        return list(itertools.islice(source, start_index, stop_index, step))
 
 
 def parse_args(source, args) -> list:
@@ -34,7 +34,7 @@ def parse_args(source, args) -> list:
     if step < 0:
         source = source[::-1]
 
-    start = source.index(args[0]) if args[0] else 0
-    stop = source.index(args[1]) if args[1] else len(source)
+    start_index = source.index(args[0]) if args[0] else 0
+    stop_index = source.index(args[1]) if args[1] else len(source)
 
-    return [start, stop, step]
+    return [start_index, stop_index, step]
