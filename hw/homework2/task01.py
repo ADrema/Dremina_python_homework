@@ -10,7 +10,9 @@ import re
 import unicodedata
 
 
-def get_longest_various_symbols_words_from_file(file_path: str, quantity: int, encoding="utf-8") -> list:
+def get_longest_various_symbols_words_from_file(
+        file_path: str, quantity: int, encoding="utf-8"
+) -> list:
     """
     Returns k longest words from file contain the largest amount of unique symbols
     :param file_path:
@@ -26,7 +28,9 @@ def get_longest_various_symbols_words_from_file(file_path: str, quantity: int, e
     for word in file_words:
         unique_words_dict[word] = set(word)
     # sort dict by value length and alphabet (x[0])
-    sorted_list: list[str] = sorted(unique_words_dict.items(), key=lambda x: (len(x[0]), x[0]))
+    sorted_list: list[str] = sorted(
+        unique_words_dict.items(), key=lambda x: (len(x[0]), x[0])
+    )
 
     return [word[0] for word in sorted_list[-quantity:]]
 
@@ -35,13 +39,15 @@ def get_rarest_char_from_file(file_path: str, encoding="utf8") -> str:
     """
     Returns the rarest char in the file, chars are sorted in alphabetical order
     """
-    counts: dict[tuple[str: int]] = {}
+    counts: dict[tuple[str:int]] = {}
     with open(file_path, encoding=encoding) as file:
         for line in file:
             for symbol in line.lower():
                 counts[symbol] = counts.get(symbol, 0) + 1
         # sort dict by value and alphabet (x[0])
-        counts: list[tuple[str, int]] = sorted(counts.items(), key=lambda item: (item[1], item[0]))
+        counts: list[tuple[str, int]] = sorted(
+            counts.items(), key=lambda item: (item[1], item[0])
+        )
         print(counts)
 
     return counts[0][0]
@@ -55,8 +61,10 @@ def get_punctuation_chars_count(file_path: str, encoding="utf8") -> int:
     with open(file_path, encoding=encoding) as file:
         text = "".join(file.readlines())
 
-    punctuation_counter += sum(1 if re.match(punctuation_regexp, unicodedata.category(symbol))
-                               else 0 for symbol in text)
+    punctuation_counter += sum(
+        1 if re.match(punctuation_regexp, unicodedata.category(symbol)) else 0
+        for symbol in text
+    )
 
     return punctuation_counter
 
@@ -72,7 +80,7 @@ def get_non_ascii_chars_count(file_path: str, encoding="utf8") -> int:
 
 
 def get_most_common_non_ascii_char_from_file(file_path: str, encoding="utf-8") -> str:
-    chars_dict: dict[tuple[str: int]] = {}
+    chars_dict: dict[tuple[str:int]] = {}
 
     with open(file_path, encoding=encoding) as file:
         file_text: str = "".join(file.readlines())
@@ -80,7 +88,9 @@ def get_most_common_non_ascii_char_from_file(file_path: str, encoding="utf-8") -
             if ord(symbol) >= 127:
                 chars_dict[symbol] = chars_dict.get(symbol, 0) + 1
 
-    chars_list: list[tuple[str, int]] = sorted(chars_dict.items(), key=lambda item: (item[1], item[0]))
+    chars_list: list[tuple[str, int]] = sorted(
+        chars_dict.items(), key=lambda item: (item[1], item[0])
+    )
 
     return chars_list[-1:][0][0]
 

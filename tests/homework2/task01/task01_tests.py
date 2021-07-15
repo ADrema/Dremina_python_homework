@@ -1,10 +1,10 @@
 import pytest
 
 from hw.homework2.task01 import (
-    get_non_ascii_chars_count,
-    get_punctuation_chars_count,
     get_longest_various_symbols_words_from_file,
     get_most_common_non_ascii_char_from_file,
+    get_non_ascii_chars_count,
+    get_punctuation_chars_count,
     get_rarest_char_from_file,
 )
 
@@ -41,7 +41,10 @@ most_common_non_ascii_data_provider = [(one_line_file_path, "—"), (data_file_p
 
 @pytest.mark.parametrize("filepath, expected", most_common_non_ascii_data_provider)
 def test_most_common_non_ascii_function(filepath, expected):
-    assert get_most_common_non_ascii_char_from_file(filepath, encoding=encoding) == expected
+    assert (
+            get_most_common_non_ascii_char_from_file(filepath, encoding=encoding)
+            == expected
+    )
 
 
 longest_diverse_words_data_provider = [
@@ -70,5 +73,8 @@ longest_diverse_words_data_provider = [
 )
 def test_get_longest_diverse_words(filepath, words_number, expected):
     assert (
-            get_longest_various_symbols_words_from_file(filepath, words_number, encoding=encoding) == expected
+            get_longest_various_symbols_words_from_file(
+                filepath, words_number, encoding=encoding
+            )
+            == expected
     )
