@@ -10,83 +10,79 @@ import re
 import unicodedata
 
 
-def get_longest_diverse_words(file_path: str, k: int, encoding="utf-8") -> list:
+def get_longest_various_symbols_words_from_file(file_path: str, quantity: int, encoding="utf-8") -> list:
     """
     Returns k longest words from file contain the largest amount of unique symbols
     :param file_path:
-    :param k: words number to be returned
+    :param quantity: words number to be returned
     :param encoding: encoding parameter to read from file
     :return: respective words list
     """
-    unique_words_dict = dict()
+    unique_words_dict: dict[str, set] = dict()
 
     file_words = set(get_words_from_file(file_path, encoding))
 
     # reform into words dict, with key = 'word', value = word's symbols set
     for word in file_words:
         unique_words_dict[word] = set(word)
-    # sort dict by value length and alphabet
-    sorted_dict = sorted(unique_words_dict.items(), key=lambda x: (len(x[0]), x[0]))
+    # sort dict by value length and alphabet (x[0])
+    sorted_list: list[str] = sorted(unique_words_dict.items(), key=lambda x: (len(x[0]), x[0]))
 
-    return [word[0] for word in sorted_dict[-k:]]
+    return [word[0] for word in sorted_list[-quantity:]]
 
 
-def get_rarest_char(file_path: str, encoding="utf8") -> str:
+def get_rarest_char_from_file(file_path: str, encoding="utf8") -> str:
     """
     Returns the rarest char in the file, chars are sorted in alphabetical order
     """
-    counts = {}
+    counts: dict[tuple[str: int]] = {}
     with open(file_path, encoding=encoding) as file:
         for line in file:
             for symbol in line.lower():
                 counts[symbol] = counts.get(symbol, 0) + 1
-        counts = sorted(counts.items(), key=lambda item: (item[1], item[0]))
+        # sort dict by value and alphabet (x[0])
+        counts: list[tuple[str, int]] = sorted(counts.items(), key=lambda item: (item[1], item[0]))
+        print(counts)
 
-    return counts[0:][0][0]
+    return counts[0][0]
 
 
-def count_punctuation_chars(file_path: str, encoding="utf8") -> int:
+def get_punctuation_chars_count(file_path: str, encoding="utf8") -> int:
+    text = str()
+    punctuation_regexp = "^P.+"
     punctuation_counter = int()
-    pattern = "^P.+"
 
     with open(file_path, encoding=encoding) as file:
-        for line in file:
-            punctuation_counter += sum(
-                1 if re.match(pattern, unicodedata.category(symbol)) else 0
-                for symbol in line
-            )
+        text = "".join(file.readlines())
+
+    punctuation_counter += sum(1 if re.match(punctuation_regexp, unicodedata.category(symbol))
+                               else 0 for symbol in text)
 
     return punctuation_counter
 
 
-def count_non_ascii_chars(file_path: str, encoding="utf8") -> int:
+def get_non_ascii_chars_count(file_path: str, encoding="utf8") -> int:
     non_ascii_count = int()
 
     with open(file_path, encoding=encoding) as file:
-        for line in file:
-            if line.isascii():
-                continue
-            non_ascii_count += sum(1 if ord(x) > 127 else 0 for x in line)
+        file_text: str = "".join(file.readlines())
+        non_ascii_count += sum(1 if ord(x) > 127 else 0 for x in file_text)
 
     return non_ascii_count
 
 
-def get_most_common_non_ascii_char(file_path: str, encoding="utf-8") -> str:
-    chars_stat = {}
+def get_most_common_non_ascii_char_from_file(file_path: str, encoding="utf-8") -> str:
+    chars_dict: dict[tuple[str: int]] = {}
 
     with open(file_path, encoding=encoding) as file:
-        for line in file:
-            if line.isascii():
-                continue
+        file_text: str = "".join(file.readlines())
+        for symbol in file_text.lower():
+            if ord(symbol) >= 127:
+                chars_dict[symbol] = chars_dict.get(symbol, 0) + 1
 
-            for symbol in line.lower():
-                if ord(symbol) < 127:
-                    continue
-                chars_stat[symbol] = chars_stat.get(symbol, 0) + 1
+    chars_list: list[tuple[str, int]] = sorted(chars_dict.items(), key=lambda item: (item[1], item[0]))
 
-    chars_stat = sorted(chars_stat.items(), key=lambda item: (item[1], item[0]))
-
-    return chars_stat[-1:][0][0]
+    return chars_list[-1:][0][0]
 
 
 def get_words_from_file(file_path: str, encoding="utf-8") -> list:
